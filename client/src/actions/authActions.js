@@ -19,28 +19,28 @@ export const registerUser = (userData, history) => dispatch => {
 // Login - Get User Token
 export const loginUser = (userData) => dispatch => {
     axios.post('/api/users/login', userData)
-    .then(res => {  
-        // Save to localStorage
-        const { token } = res.data;
+        .then(res => {
+            // Save to localStorage
+            const { token } = res.data;
 
-        // Set token to localStorage
-        localStorage.setItem('jwtToken', token);
+            // Set token to localStorage
+            localStorage.setItem('jwtToken', token);
 
-        // Set Token to Auth Header
-        setAuthToken(token);
+            // Set Token to Auth Header
+            setAuthToken(token);
 
-        //Decode Token to Get User Data
-        const decoded = jwt_decode(token);
+            //Decode Token to Get User Data
+            const decoded = jwt_decode(token);
 
-        // Set Current User
-        dispatch(setCurrentUser(decoded));
-    })
-    .catch(err => {
-        dispatch({
-            type: GET_ERRORS,
-            payload: err.response.data
+            // Set Current User
+            dispatch(setCurrentUser(decoded));
         })
-    })
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        )
 };
 
 // Set Logged in User
